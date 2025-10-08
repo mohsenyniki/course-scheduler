@@ -10,4 +10,9 @@ public class CourseSchedulerApplication {
 		SpringApplication.run(CourseSchedulerApplication.class, args);
 	}
 
+	public String hello()
+	{
+		return "home";
+	}
+
 }

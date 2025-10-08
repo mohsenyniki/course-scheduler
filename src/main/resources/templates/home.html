@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http:/ /www.w3.org/1999/xhtml" xmlns:th="http:/ /www.thymeleaf.org">
+
+<!-- <head>
+    <title>cnnn</title>
+</head> -->
+
+<body>
+    <h1 style="text-align: center;">Schedule Your Courses With Us! </h1>
+    <img th:src="@{/images/welcome.png}" width="500" style="display:block; margin:auto;">
+    <!-- <a th:href="@{/design}" class="btn">Login</a> -->
+     <form th:action="@{/search}" method="get" style="text-align: center; margin-top: 20px;">
+        <input type="text" name="query" placeholder="Search for a course" style="width: 420px; height: 35px;">
+        <button type="submit" style="width: max-content; height: 35px;">Search</button>
+    </form>
+</body>
+
+</html>
