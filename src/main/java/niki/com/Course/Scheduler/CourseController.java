@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class CourseController {
 
-    private final CourseRepository repo;
+    private final CourseDao repo;
 
-    public CourseController(CourseRepository repo) {
+    public CourseController(CourseDao repo) {
         this.repo = repo;
     }
 
