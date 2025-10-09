@@ -10,11 +10,11 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class CourseDao {
+public class CourseDataRepo {
 
     private final JdbcTemplate jdbc;
 
-    public CourseDao(JdbcTemplate jdbc) {
+    public CourseDataRepo(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
@@ -44,7 +44,7 @@ public class CourseDao {
 
     public List<Course> findByCourseNameContainingIgnoreCase(String namePart) {
         String sql = "select course_id, course_name, credits, instructor, location, schedule from course where lower(course_name) like '%' || lower(?) || '%'";
-        List<Course> list = jdbc.query(sql, new Object[]{namePart}, new CourseRowMapper());
+        List<Course> list = jdbc.query(sql, new CourseRowMapper(), namePart);
         return list;
     }
 
