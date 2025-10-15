@@ -1,4 +1,4 @@
-package niki.com.Course.Scheduler;
+package niki.com.Course.Scheduler.Models;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

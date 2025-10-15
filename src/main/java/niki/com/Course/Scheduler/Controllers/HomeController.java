@@ -1,4 +1,4 @@
-package niki.com.Course.Scheduler;
+package niki.com.Course.Scheduler.Controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,8 +1,10 @@
-package niki.com.Course.Scheduler;
+package niki.com.Course.Scheduler.Data;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
+import niki.com.Course.Scheduler.Models.Course;
 
 @Component
 public class DataLoader implements CommandLineRunner {

@@ -40,11 +40,13 @@
         <h3>Search Results:</h3>
         <ul style="list-style: none; padding: 0;">
             <li th:each="course : ${results}">
-                <strong th:text="${course.courseId}"></strong> - 
-                <span th:text="${course.courseName}"></span>
-                (<span th:text="${course.credits}"></span> credits) - 
-                <span th:text="${course.instructor}"></span> - 
-                <span th:text="${course.campusId}"></span> - 
+                <a th:href="@{'/courses/' + ${course.courseId}}">
+                    <strong th:text="${course.courseId}"></strong>
+                    <span th:text="${course.courseName}"></span> -
+                </a>
+                (<span th:text="${course.credits}"></span> credits) -
+                <span th:text="${course.instructor}"></span> -
+                <span th:text="${course.campusId}"></span> -
                 <span th:text="${course.semester}"></span>
             </li>
         </ul>
