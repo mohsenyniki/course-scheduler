@@ -39,7 +39,7 @@ public class CourseController {
         model.addAttribute("campus", campus);
         model.addAttribute("semester", semester);
 
-        return "search"; // renders search.html with the results
+        return "home"; // renders search.html with the results
     }
 }
 // in this class we simply handle the get request to /search and return search.html with the results(found courses)

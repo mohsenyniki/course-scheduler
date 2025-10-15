@@ -17,8 +17,8 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (courseRepo.count() == 0) {
             List<Course> samples = List.of(
-                new Course("CS101", "Intro to CS", "Dr. Smith", "MWF 10:00-11:00", "Room 12", 3, "Fall", "Blomington", List.of()),
-                new Course("MATH200", "Calculus II", "Dr. Jones", "TTh 09:00-10:30", "Room 3", 4, "Fall", "Blomington", List.of()),
+                new Course("CS101", "Intro to CS", "Dr. Smith", "MWF 10:00-11:00", "Room 12", 3, "Fall", "Bloomington", List.of()),
+                new Course("MATH200", "Calculus II", "Dr. Jones", "TTh 09:00-10:30", "Room 3", 4, "Fall", "Bloomington", List.of()),
                 new Course("HIST150", "World History", "Prof. Allen", "MW 14:00-15:30", "Room 7", 3, "Spring", "Indianapolis",List.of()),
                 new Course("CSCI311", "Programming Languages", "Prof. Allen", "MW 14:00-15:30", "Room 7", 3, "Spring", "Indianapolis",List.of()),
                 new Course("INFO101", "Informatics fundementals", "Prof. Bob", "MW 14:00-15:30", "Room 7", 3, "Summer", "Kokomo",List.of()),
@@ -27,7 +27,7 @@ public class DataLoader implements CommandLineRunner {
                 new Course("BIO300", "Theory of Evolution", "Prof. Ahmad", "MW 14:00-15:30", "Room 7", 3, "Fall", "Bloomington",List.of())
 
             );
-            courseRepo.saveAll(samples);
+            courseRepo.saveAll(samples); 
         }
     }
 }
