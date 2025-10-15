@@ -9,10 +9,32 @@
     <h1 style="text-align: center;">Schedule Your Courses With Us! </h1>
     <img th:src="@{/images/welcome.png}" width="500" style="display:block; margin:auto;">
     <!-- <a th:href="@{/design}" class="btn">Login</a> -->
-     <form th:action="@{/search}" method="get" style="text-align: center; margin-top: 20px;">
+    <form th:action="@{/search}" method="get" style="text-align: center; margin-top: 20px;">
         <input type="text" name="query" placeholder="Search for a course" style="width: 420px; height: 35px;">
+
+        <!-- Campus Filter -->
+        <select name="campus" style="height: 35px;">
+            <option value="">All Campuses</option>
+            <option value="Bloomington">Bloomington</option>
+            <option value="Kokomo">Kokomo</option>
+            <option value="Indianapolis">Indianapolis</option>
+        </select>
+
+        <!-- Semester Filter -->
+        <select name="semester" style="height: 35px;">
+            <option value="">All Semesters</option>
+            <option value="Fall">Fall</option>
+            <option value="Spring">Spring</option>
+            <option value="Summer">Summer</option>
+        </select>
+
         <button type="submit" style="width: max-content; height: 35px;">Search</button>
     </form>
+
+    <div th:if="${error}" style="color: red; text-align: center;">
+        <p th:text="${error}"></p>
+    </div>
+
 </body>
 
 </html>

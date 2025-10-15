@@ -16,6 +16,8 @@ public class Course {
     private String schedule;
     private String location;
     private int credits;
+    private String semester;
+    private String campusId;
 
     private List<String> prerequisites;
 }

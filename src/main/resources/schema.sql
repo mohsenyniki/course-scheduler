@@ -5,7 +5,9 @@ CREATE TABLE IF NOT EXISTS course (
   credits INTEGER NOT NULL,
   instructor VARCHAR(255),
   location VARCHAR(255),
-  schedule VARCHAR(255)
+  schedule VARCHAR(255),
+  semester VARCHAR(255),
+  campus_id VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS course_prerequisites (
