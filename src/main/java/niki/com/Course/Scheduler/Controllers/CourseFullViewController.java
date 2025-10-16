@@ -5,6 +5,7 @@ import niki.com.Course.Scheduler.Models.Course;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -14,14 +15,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/courses")
 
-public class CourseFullView {
+public class CourseFullViewController {
     private final CourseDataRepo repo;
-    public CourseFullView(CourseDataRepo repo) {
+    public CourseFullViewController(CourseDataRepo repo) {
         this.repo = repo;
     }
 
     @GetMapping("/{courseId}")
-   public String getCourseFullInfo(@RequestParam("courseId") String courseId, Model model) {
+   public String getCourseFullInfo(@PathVariable("courseId") String courseId, Model model) {
 
         List<Course> courses = repo.findByCourseIdIgnoreCase(courseId);
         if(courses.isEmpty()) {
