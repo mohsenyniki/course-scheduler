@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import niki.com.Course.Scheduler.Models.Course;
 
 @Component
-public class DataLoader implements CommandLineRunner {
+public class CourseDataLoader implements CommandLineRunner {
 
     private final CourseDataRepo courseRepo;
 
-    public DataLoader(CourseDataRepo courseRepo) {
+    public CourseDataLoader(CourseDataRepo courseRepo) {
         this.courseRepo = courseRepo;
     }
 

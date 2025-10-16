@@ -1,16 +1,26 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Course Details</title>
 </head>
 <body>
     <h2 th:text="${course.courseId} + ' - ' + ${course.courseName}"></h2>
+
     <p><strong>Credits:</strong> <span th:text="${course.credits}"></span></p>
     <p><strong>Instructor:</strong> <span th:text="${course.instructor}"></span></p>
     <p><strong>Campus:</strong> <span th:text="${course.campusId}"></span></p>
     <p><strong>Semester:</strong> <span th:text="${course.semester}"></span></p>
     <!-- <p><strong>Description:</strong> <span th:text="${course.description}"></span></p> -->
-    <p><a th:href="@{/}">Back to Home   </a></p>
-</body> 
 
+    <form th:action="@{/enroll/{id}(id=${course.courseId})}" method="post" th:object="${course}" style="display:inline">
+        <input type="hidden" th:if="${_csrf != null}"
+               th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit">Enroll</button>
+    </form>
+
+    <p><a th:href="@{/}">Back to Home</a></p>
+</body>
 </html>
+
+
