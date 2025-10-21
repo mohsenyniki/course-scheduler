@@ -12,4 +12,8 @@ public class HomeController {
     return "home"; 
  }
  
+ @GetMapping("/schedule")
+ public String schedule() {
+    return "schedule"; // renders schedule.html
+ }
 }

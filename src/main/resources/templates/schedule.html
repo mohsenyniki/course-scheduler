@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Schedule</title>
+</head>
+<body>
+    <h1 th:text="${message}"></h1>
+
+    <h2>Recently Enrolled Course:</h2>
+    <p th:if="${currentCourse != null}" th:text="${currentCourse}"></p>
+
+    <h2>Enrolled Courses:</h2>
+    <ul>
+        <li th:each="course : ${courses}" th:text="${course}"></li>
+    </ul>
+
+    <a href="/">Go Back</a>
+</body>
+</html>
