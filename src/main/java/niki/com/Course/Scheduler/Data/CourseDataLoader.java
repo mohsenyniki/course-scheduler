@@ -20,7 +20,7 @@ public class CourseDataLoader implements CommandLineRunner {
         if (courseRepo.count() == 0) {
             List<Course> samples = List.of(
                 // CS201: no prereqs
-                new Course("CS101", "Intro to CS", "Dr. Smith", "MWF 10:00-11:00", "Room 12", 3, "Fall", "Bloomington", List.of()),
+                new Course("CS101", "Intro to CS", "Dr. Smith", "MWF 10:00 - 11:00", "Room 12", 3, "Fall", "Bloomington", List.of()),
 
                 new Course("CS301", "Intro to CS", "Dr. Smith", "MWF 10:00-11:00", "Room 12", 3, "Fall", "Bloomington", List.of("CS201")),
                 // MATH200: no prereqs
@@ -31,7 +31,7 @@ public class CourseDataLoader implements CommandLineRunner {
                 // INFO301 requires CS201
                 new Course("INFO301", "Informatics fundamentals", "Prof. Bob", "MW 14:00-15:30", "Room 7", 3, "Summer", "Kokomo",List.of("INFO201")),
                 new Course("BUS201", "Intro to Business", "Prof. Alex", "MW 14:00-15:30", "Room 7", 3, "Summer", "Kokomo",List.of()),
-                new Course("ENG131", "Intensive Writing", "Prof. Ali", "MW 14:00-15:30", "Room 7", 3, "Fall", "Indianapolis",List.of()),
+                new Course("ENG131", "Intensive Writing", "Prof. Ali", "MWF 10:00 - 11:00", "Room 7", 3, "Fall", "Indianapolis",List.of()),
                 // BIO300 requires ENG131
                 new Course("BIO300", "Theory of Evolution", "Prof. Ahmad", "MW 14:00-15:30", "Room 7", 3, "Fall", "Bloomington",List.of("ENG131"))
 
