@@ -6,12 +6,18 @@
 <body>
     <h1 th:text="${message}"></h1>
 
-    <h2>Recently Enrolled Course:</h2>
+    <h2 th:if="${currentCourse != null}">Recently Enrolled Course:</h2>
     <p th:if="${currentCourse != null}" th:text="${currentCourse}"></p>
 
     <h2>Enrolled Courses:</h2>
     <ul>
-        <li th:each="course : ${courses}" th:text="${course}"></li>
+        <li th:each="course : ${enrolledCourses}">
+            <strong th:text="${course.courseId}"></strong> - <span th:text="${course.courseName}"></span>
+            <div>Schedule: <span th:text="${course.schedule}"></span></div>
+            <div>Start: <span th:text="${course.startTime}"></span> End: <span th:text="${course.endTime}"></span></div>
+        </li>
+        <!-- Backwards-compatible: if old 'courses' flash attribute contains IDs, render them -->
+        <li th:each="id : ${courses}" th:text="${id}" th:if="${enrolledCourses == null || #lists.isEmpty(enrolledCourses)}"></li>
     </ul>
 
     <a href="/">Go Back</a>
