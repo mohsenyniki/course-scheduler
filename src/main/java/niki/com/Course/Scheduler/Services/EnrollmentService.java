@@ -1,25 +1,30 @@
 package niki.com.Course.Scheduler.Services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import niki.com.Course.Scheduler.Data.EnrollmentDataRepo;
 
-import java.util.*;
+import java.util.Set;
 
 @Service
 public class EnrollmentService {
 
-    // In-memory store mapping username -> set of courseIds
-    private final Map<String, Set<String>> studentEnrollments = new HashMap<>();
+    private final EnrollmentDataRepo repo;
+
+    @Autowired
+    public EnrollmentService(EnrollmentDataRepo repo) {
+        this.repo = repo;
+    }
 
     public void enroll(String studentId, String courseId) {
-        studentEnrollments.putIfAbsent(studentId, new HashSet<>());
-        studentEnrollments.get(studentId).add(courseId);
+        repo.enroll(studentId, courseId);
     }
 
     public Set<String> getEnrolledCourses(String studentId) {
-        return studentEnrollments.getOrDefault(studentId, Collections.emptySet());
+        return repo.findEnrolledCourseIds(studentId);
     }
 
     public boolean isEnrolled(String studentId, String courseId) {
-        return studentEnrollments.getOrDefault(studentId, Collections.emptySet()).contains(courseId);
+        return repo.isEnrolled(studentId, courseId);
     }
 }

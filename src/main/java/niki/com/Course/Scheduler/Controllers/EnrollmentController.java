@@ -133,7 +133,7 @@ public class EnrollmentController {
             }
         }
 
-        // constraint 3: if the student has time conflict with another course they are enrolled in
+        // CONSTRAINT 3: if the student has time conflict with another course they are enrolled in
         // check time conflicts for POST flow
         String targetSchedulePost = coursePost.getSchedule();
         String targetDaysPost = extractDays(targetSchedulePost);

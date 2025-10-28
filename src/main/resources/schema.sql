@@ -14,3 +14,9 @@ CREATE TABLE IF NOT EXISTS course_prerequisites (
   course_course_id VARCHAR(255) NOT NULL,
   prerequisites VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS enrollment (
+  student_username VARCHAR(255) NOT NULL,
+  course_course_id VARCHAR(255) NOT NULL,
+  PRIMARY KEY (student_username, course_course_id)
+);
