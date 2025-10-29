@@ -48,6 +48,14 @@
                 <span th:text="${course.instructor}"></span> -
                 <span th:text="${course.campusId}"></span> -
                 <span th:text="${course.semester}"></span>
+                <span th:text="${course.schedule}"></span>
+                <form th:action="@{'/enroll/' + ${course.courseId}}" method="post" style="display:inline;">
+                    <button type="submit" 
+                        style="margin-left: 15px; background-color: #007BFF; color: white; border: none; 
+                               padding: 5px 10px; border-radius: 5px; cursor: pointer;">
+                        Enroll
+                    </button>
+                </form>
             </li>
         </ul>
     </div>

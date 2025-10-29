@@ -36,7 +36,20 @@ public class UserDetailService {
                 .password(passwordEncoder.encode("alipassword"))
                 .roles("USER")
                 .build();
+        UserDetails user5 = User.withUsername("Armin")
+                .password(passwordEncoder.encode("arminpassword"))
+                .roles("USER")
+                .build();
+        UserDetails user8 = User.withUsername("Ahmad")
+                .password(passwordEncoder.encode("ahmadpassword"))
+                .roles("USER")
+                .build();
+        UserDetails user9 = User.withUsername("Alice")
+                .password(passwordEncoder.encode("alicepassword"))
+                .roles("USER")
+                .build();
+       
 
-        return new InMemoryUserDetailsManager(user1, user2, user3, user4);
+        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5, user8, user9);
     }
 }
