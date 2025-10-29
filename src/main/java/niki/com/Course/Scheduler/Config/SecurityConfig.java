@@ -16,7 +16,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/enroll/**").authenticated() // must be logged in to enroll
+                .requestMatchers("/enroll/**", "/schedule").authenticated() // must be logged in to enroll or view schedule
                 .anyRequest().permitAll() // everything else is public
             )
             .formLogin(form -> form

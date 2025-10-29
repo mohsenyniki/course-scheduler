@@ -8,7 +8,14 @@
 <body>
     <h1 style="text-align: center;">Schedule Your Courses With Us! </h1>
     <img th:src="@{/images/welcome.png}" width="500" style="display:block; margin:auto;">
-    <!-- <a th:href="@{/design}" class="btn">Login</a> -->
+    <!-- quick access buttons -->
+    <div style="text-align: center; margin-top: 12px;">
+        
+        <!-- Access my schedule: goes to /schedule which we'll require authentication for -->
+        <a th:href="@{/schedule}" style="margin-left: 10px; text-decoration:none;">
+            <button style="background:#17a2b8;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Access my schedule</button>
+        </a>
+    </div>
     <form th:action="@{/search}" method="get" style="text-align: center; margin-top: 20px;">
         <input type="text" name="query" placeholder="Search for a course" style="width: 420px; height: 35px;">
 
