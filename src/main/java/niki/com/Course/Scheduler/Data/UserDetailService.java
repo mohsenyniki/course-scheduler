@@ -19,8 +19,8 @@ public class UserDetailService {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user1 = User.withUsername("Niki")
-                .password(passwordEncoder.encode("nikipassword"))
+        UserDetails user1 = User.withUsername("Zahra")
+                .password(passwordEncoder.encode("zahrapassword"))
                 .roles("USER")
                 .build();
 
@@ -37,6 +37,6 @@ public class UserDetailService {
                 .roles("USER")
                 .build();
 
-        return new InMemoryUserDetailsManager(user1, user2);
+        return new InMemoryUserDetailsManager(user1, user2, user3, user4);
     }
 }
