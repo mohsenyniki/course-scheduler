@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
 public class SecurityConfig {
@@ -19,7 +21,7 @@ public class SecurityConfig {
             )
             .formLogin(form -> form
                 .loginPage("/login") // your custom login page (or default if not created)
-                .defaultSuccessUrl("/schedule", true) // redirect to schedule page after login
+                .successHandler(enrollmentSuccessHandler)
                 .permitAll()
             )
             .logout(logout -> logout
@@ -35,4 +37,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Autowired
+    private AuthenticationSuccessHandler enrollmentSuccessHandler;
 }

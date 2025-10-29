@@ -28,6 +28,14 @@ public class UserDetailService {
                 .password(passwordEncoder.encode("parisapassword"))
                 .roles("ADMIN")
                 .build();
+        UserDetails user3 = User.withUsername("Parastoo")
+                .password(passwordEncoder.encode("parastoopassword"))
+                .roles("USER1")
+                .build();
+        UserDetails user4 = User.withUsername("Ali")
+                .password(passwordEncoder.encode("alipassword"))
+                .roles("USER")
+                .build();
 
         return new InMemoryUserDetailsManager(user1, user2);
     }
