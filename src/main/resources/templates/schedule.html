@@ -48,6 +48,14 @@
             th:if="${enrolledCourses == null || #lists.isEmpty(enrolledCourses)}"></li>
     </ul>
 
+    <h3>Schedule debug</h3>
+    <div th:if="${scheduleDebug != null}">
+        <ul>
+            <li th:each="course : ${enrolledCourses}"
+                th:text="${course.courseId + ' -> ' + (scheduleDebug[course.courseId] != null ? scheduleDebug[course.courseId] : 'null')}"></li>
+        </ul>
+    </div>
+
     <h2>Schedule Table </h2>
     <!-- Schedule Table -->
     <table border="1" style="border-collapse: collapse; width: 100%; text-align: center;">
@@ -66,6 +74,13 @@
                 <td th:text="${timeSlot}"></td>
                 <td th:each="day : ${days}" th:text="${scheduleTable[timeSlot] != null ? scheduleTable[timeSlot][day] : ''}"></td>
             </tr>
+            <!-- <tr th:each="timeSlot : ${timeSlots}">
+                <td th:text="${timeSlot}"></td>
+                <th:block th:each="day : ${days}">
+                    <td th:text="${scheduleTable[timeSlot][day]}"></td>
+                </th:block>
+            </tr> -->
+
         </tbody>
     </table>
 

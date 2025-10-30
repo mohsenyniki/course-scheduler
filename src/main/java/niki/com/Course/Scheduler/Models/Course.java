@@ -20,6 +20,8 @@ public class Course {
     private String campusId;
 
     private List<String> prerequisites;
+    // course description
+    // 
 
     /**
      * Returns the start time portion extracted from the schedule string.

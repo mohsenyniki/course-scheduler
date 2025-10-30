@@ -17,6 +17,7 @@ import java.util.Collections;
 
 @Controller
 public class HomeController {
+   // logger previously used for debug; removed to keep output clean
  @Autowired
  private niki.com.Course.Scheduler.Services.EnrollmentService enrollmentService;
 
@@ -123,24 +124,38 @@ public class HomeController {
          String[] timeParts = timesToken.split("-");
          if (timeParts.length < 2) continue;
          String startTimeStr = timeParts[0].replaceAll("\\s+", "");
-         String startHourStr = startTimeStr.split(":")[0];
-         String startSlotStr = startTimeStr + " - " + String.format("%02d:00", Integer.parseInt(startHourStr) + 1);
+         String[] hm = startTimeStr.split(":");
+         if (hm.length < 1) continue;
+         int startHour;
+         try {
+            startHour = Integer.parseInt(hm[0]);
+         } catch (NumberFormatException ex) {
+            continue;
+         }
+         String paddedStart = String.format("%02d:%02d", startHour, hm.length > 1 ? Integer.parseInt(hm[1]) : 0);
+         String startSlotStr = paddedStart + " - " + String.format("%02d:00", (startHour + 1));
 
          String matchedSlot = null;
          if (scheduleTable.containsKey(startSlotStr)) {
             matchedSlot = startSlotStr;
          } else {
+            // fallback: match by hour (handles missing leading zeros)
+            String hourPrefix = String.format("%02d:", startHour);
             for (String slot : timeSlots) {
-               if (slot.startsWith(startTimeStr)) { matchedSlot = slot; break; }
+               if (slot.startsWith(hourPrefix)) { matchedSlot = slot; break; }
             }
          }
          if (matchedSlot == null) continue;
 
          List<String> tokens = tokenizeDays.apply(daysToken);
+         // store a debug-free mapping (no logging) — mapping validated earlier
          for (String tok : tokens) {
             String dayName = dayNameMap.get(tok);
             if (dayName != null) {
-               scheduleTable.get(matchedSlot).put(dayName, c.getCourseId());
+               // store a friendly label (id + name) in the table cell so the UI shows course name
+               String label = c.getCourseId();
+               if (c.getCourseName() != null && !c.getCourseName().isEmpty()) label += " - " + c.getCourseName();
+               scheduleTable.get(matchedSlot).put(dayName, label);
             }
          }
       }
