@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Schedule</title>
 </head>
+
 <body>
     <div th:if="${message != null}" style="padding:8px;border:1px solid #ccc;background:#fee;margin-bottom:8px;">
         <strong th:text="${message}"></strong>
     </div>
+
+    <title>Schedule</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        td {
+            height: 50px;
+        }
+    </style>
 
     <h2 th:if="${currentCourse != null}">Recently Enrolled Course:</h2>
     <p th:if="${currentCourse != null}" th:text="${currentCourse}"></p>
@@ -19,9 +44,32 @@
             <!-- <div>Start: <span th:text="${course.startTime}"></span> End: <span th:text="${course.endTime}"></span></div> -->
         </li>
         <!-- Backwards-compatible: if old 'courses' flash attribute contains IDs, render them -->
-        <li th:each="id : ${courses}" th:text="${id}" th:if="${enrolledCourses == null || #lists.isEmpty(enrolledCourses)}"></li>
+        <li th:each="id : ${courses}" th:text="${id}"
+            th:if="${enrolledCourses == null || #lists.isEmpty(enrolledCourses)}"></li>
     </ul>
+
+    <h2>Schedule Table </h2>
+    <!-- Schedule Table -->
+    <table border="1" style="border-collapse: collapse; width: 100%; text-align: center;">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="timeSlot : ${timeSlots}">
+                <td th:text="${timeSlot}"></td>
+                <td th:each="day : ${days}" th:text="${scheduleTable[timeSlot] != null ? scheduleTable[timeSlot][day] : ''}"></td>
+            </tr>
+        </tbody>
+    </table>
 
     <a href="/">Go Back</a>
 </body>
+
 </html>

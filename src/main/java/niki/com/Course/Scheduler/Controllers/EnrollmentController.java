@@ -1,14 +1,13 @@
 package niki.com.Course.Scheduler.Controllers;
 import java.util.*;
 import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import niki.com.Course.Scheduler.Data.CourseDataRepo;
 import niki.com.Course.Scheduler.Models.Course;
 import java.time.LocalTime;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -280,7 +279,6 @@ public class EnrollmentController {
         // overlap exists if start1 < end2 AND start2 < end1
         return s1.isBefore(e2) && s2.isBefore(e1);
     }
-}
-
+    }
 // so now if the enrollement is successful - > i should be redirected to a new page that is now just a simple
 // page of enrolled classes so far and later i will add schedule to it.
