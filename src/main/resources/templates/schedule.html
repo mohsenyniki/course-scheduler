@@ -38,7 +38,11 @@
 
     <h2>Enrolled Courses:</h2>
     <ul>
-        <li th:each="course : ${enrolledCourses}">
+        <li th:each="course : ${enrolledCourses}" style="margin-bottom:10px;">
+            <form th:action="@{'/enroll/drop/' + ${course.courseId}}" method="post" style="display:inline; margin-right:8px;">
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" style="background:#c82333;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;">Drop</button>
+            </form>
             <strong th:text="${course.courseId}"></strong> - <span th:text="${course.courseName}"></span>
             <div>Schedule: <span th:text="${course.schedule}"></span></div>
             <!-- <div>Start: <span th:text="${course.startTime}"></span> End: <span th:text="${course.endTime}"></span></div> -->

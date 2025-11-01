@@ -27,4 +27,8 @@ public class EnrollmentService {
     public boolean isEnrolled(String studentId, String courseId) {
         return repo.isEnrolled(studentId, courseId);
     }
+
+    public void drop(String studentId, String courseId) {
+        repo.drop(studentId, courseId);
+    }
 }

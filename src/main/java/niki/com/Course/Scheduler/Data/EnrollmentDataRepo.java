@@ -30,4 +30,8 @@ public class EnrollmentDataRepo {
     Integer count = jdbc.queryForObject("SELECT COUNT(*) FROM enrollment WHERE student_username = ? AND course_course_id = ?", Integer.class, username, courseId);
         return count != null && count > 0;
     }
+
+    public void drop(String username, String courseId) {
+        jdbc.update("DELETE FROM enrollment WHERE student_username = ? AND course_course_id = ?", username, courseId);
+    }
 }

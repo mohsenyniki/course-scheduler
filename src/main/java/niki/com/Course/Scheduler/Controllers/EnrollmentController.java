@@ -279,6 +279,42 @@ public class EnrollmentController {
         // overlap exists if start1 < end2 AND start2 < end1
         return s1.isBefore(e2) && s2.isBefore(e1);
     }
+    
+    @GetMapping("/Drop/{studentId}/{courseId}")  // defining the endpoint
+    public String dropCourseFromStudentString(
+            @PathVariable String studentId,     // extracting values from the URL
+            @PathVariable String courseId,      // extracting values from the URL
+            Model model) {
+        // Implementation for dropping a course from a student's schedule would go here
+        if (studentId == null || studentId.isEmpty() || courseId == null || courseId.isEmpty()) {
+            model.addAttribute("error", "Invalid student ID or course ID");
+            return "error";
+        }
+        // For now, just simulate dropping the course
+        if (studentId != null && !studentId.isEmpty() && courseId != null && !courseId.isEmpty()) {
+            enrollmentService.drop(studentId, courseId);
+        }
+        return "redirect:/schedule"; // Redirect back to schedule after dropping
     }
+
+    // POST endpoint for the authenticated user to drop a course
+    @PostMapping("/drop/{courseId}")
+    public String dropCourseForCurrentUser(@PathVariable String courseId, Principal principal, org.springframework.web.servlet.mvc.support.RedirectAttributes redirectAttributes) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        String studentId = principal.getName();
+        if (enrollmentService.isEnrolled(studentId, courseId)) {
+            enrollmentService.drop(studentId, courseId);
+            redirectAttributes.addFlashAttribute("message", "Dropped course " + courseId + "");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "You are not enrolled in " + courseId);
+        }
+        // refresh enrolled list on schedule
+        Set<String> enrolledCourses = new HashSet<>(enrollmentService.getEnrolledCourses(studentId));
+        redirectAttributes.addFlashAttribute("courses", enrolledCourses);
+        return "redirect:/schedule";
+    }
+}
 // so now if the enrollement is successful - > i should be redirected to a new page that is now just a simple
 // page of enrolled classes so far and later i will add schedule to it.

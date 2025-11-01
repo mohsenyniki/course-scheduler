@@ -33,6 +33,7 @@ public class CourseFullViewController {
         model.addAttribute("course", course);
         return "coursefullview"; 
    }
+   
 
 }
 
