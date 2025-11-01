@@ -5,90 +5,76 @@
     <title>Schedule</title>
 </head>
 
-<body>
-    <div th:if="${message != null}" style="padding:8px;border:1px solid #ccc;background:#fee;margin-bottom:8px;">
-        <strong th:text="${message}"></strong>
+<body style="font-family: Arial, Helvetica, sans-serif; background: #fafafa; color: #222;">
+    <div class="container" style="max-width: 1100px; margin: 18px auto; padding: 18px; background: white; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border-radius: 8px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <div>
+                <h1 style="margin:0 0 6px 0;">My Schedule</h1>
+                <div style="color:#666; font-size:0.95rem;">Weekly overview of your enrolled courses</div>
+            </div>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <a href="/" style="text-decoration:none;"><button style="background:#6c757d;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Back</button></a>
+                <a th:href="@{/search}" style="text-decoration:none;"><button style="background:#17a2b8;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Search Courses</button></a>
+            </div>
+        </div>
+
+        <div th:if="${message != null}" style="margin-top:12px;padding:10px;border:1px solid #ffd6d6;background:#fff5f5;color:#8a1f1f;border-radius:6px;">
+            <strong th:text="${message}"></strong>
+        </div>
+
+        <!-- Enrolled courses summary -->
+        <section style="margin-top:16px;">
+            <h3 style="margin:0 0 8px 0;">Enrolled Courses</h3>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                <div th:each="course : ${enrolledCourses}" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#f1f7ff;border:1px solid #e6f0ff;border-radius:6px;">
+                    <form th:action="@{'/enroll/drop/' + ${course.courseId}}" method="post" style="display:inline;">
+                        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" style="background:#c82333;color:white;border:none;padding:6px 8px;border-radius:4px;cursor:pointer;">Drop</button>
+                    </form>
+                    <div style="min-width:160px;">
+                        <div style="font-weight:600;" th:text="${course.courseId}">COURSE</div>
+                        <div style="font-size:0.9rem;color:#444;" th:text="${course.courseName}">Course name</div>
+                    </div>
+                    <div style="color:#666;font-size:0.9rem;" th:text="${course.schedule}">Schedule</div>
+                </div>
+                <div th:if="${enrolledCourses == null || #lists.isEmpty(enrolledCourses)}" style="color:#666;">You have no enrolled courses.</div>
+            </div>
+        </section>
+
+        <!-- Debug output (optional) -->
+        <div th:if="${scheduleDebug != null}" style="margin-top:14px;color:#444;font-size:0.9rem;">
+            <strong>Schedule debug:</strong>
+            <ul style="margin:6px 0 0 18px;">
+                <li th:each="course : ${enrolledCourses}" th:text="${course.courseId + ' -> ' + (scheduleDebug[course.courseId] != null ? scheduleDebug[course.courseId] : 'null')}"></li>
+            </ul>
+        </div>
+
+        <!-- Schedule Table -->
+        <div style="margin-top:18px; overflow:auto; border:1px solid #ececec; border-radius:6px;">
+            <table style="border-collapse: collapse; width:100%; min-width:760px;">
+                <thead>
+                    <tr>
+                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6; text-align:left; width:120px;">Time</th>
+                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Monday</th>
+                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Tuesday</th>
+                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Wednesday</th>
+                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Thursday</th>
+                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Friday</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="timeSlot : ${timeSlots}">
+                        <td style="padding:8px 10px; border-top:1px solid #f0f0f0; font-weight:600;"> <span th:text="${timeSlot}"></span></td>
+                        <td th:each="day : ${days}" style="padding:8px 10px; border-top:1px solid #f0f0f0; height:42px; vertical-align:middle; text-align:left;">
+                            <span th:text="${scheduleTable[timeSlot] != null ? scheduleTable[timeSlot][day] : ''}"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
-
-    <title>Schedule</title>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            text-align: center;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f4f4f4;
-        }
-
-        td {
-            height: 50px;
-        }
-    </style>
-
-    <h2 th:if="${currentCourse != null}">Recently Enrolled Course:</h2>
-    <p th:if="${currentCourse != null}" th:text="${currentCourse}"></p>
-
-    <h2>Enrolled Courses:</h2>
-    <ul>
-        <li th:each="course : ${enrolledCourses}" style="margin-bottom:10px;">
-            <form th:action="@{'/enroll/drop/' + ${course.courseId}}" method="post" style="display:inline; margin-right:8px;">
-                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                <button type="submit" style="background:#c82333;color:white;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;">Drop</button>
-            </form>
-            <strong th:text="${course.courseId}"></strong> - <span th:text="${course.courseName}"></span>
-            <div>Schedule: <span th:text="${course.schedule}"></span></div>
-            <!-- <div>Start: <span th:text="${course.startTime}"></span> End: <span th:text="${course.endTime}"></span></div> -->
-        </li>
-        <!-- Backwards-compatible: if old 'courses' flash attribute contains IDs, render them -->
-        <li th:each="id : ${courses}" th:text="${id}"
-            th:if="${enrolledCourses == null || #lists.isEmpty(enrolledCourses)}"></li>
-    </ul>
-
-    <h3>Schedule debug</h3>
-    <div th:if="${scheduleDebug != null}">
-        <ul>
-            <li th:each="course : ${enrolledCourses}"
-                th:text="${course.courseId + ' -> ' + (scheduleDebug[course.courseId] != null ? scheduleDebug[course.courseId] : 'null')}"></li>
-        </ul>
-    </div>
-
-    <h2>Schedule Table </h2>
-    <!-- Schedule Table -->
-    <table border="1" style="border-collapse: collapse; width: 100%; text-align: center;">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="timeSlot : ${timeSlots}">
-                <td th:text="${timeSlot}"></td>
-                <td th:each="day : ${days}" th:text="${scheduleTable[timeSlot] != null ? scheduleTable[timeSlot][day] : ''}">
-                    <!-- add an if statement that checks if one of these times slots in this day matches one of the enrolled courses
-                     add that course to this time slot -->
-                </td>
-            </tr>
-            <!-- <tr th:each="timeSlot : ${timeSlots}">
-                <td th:text="${timeSlot}"></td>
-                <th:block th:each="day : ${days}">
-                    <td th:text="${scheduleTable[timeSlot][day]}"></td>
-                </th:block>
-            </tr> -->
-
-        </tbody>
+</body>
     </table>
 
     <a href="/">Go Back</a>
