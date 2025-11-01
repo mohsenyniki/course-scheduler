@@ -31,4 +31,8 @@ public class EnrollmentService {
     public void drop(String studentId, String courseId) {
         repo.drop(studentId, courseId);
     }
+
+    public int countEnrolled(String courseId) {
+        return repo.countEnrolledForCourse(courseId);
+    }
 }

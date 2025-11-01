@@ -81,9 +81,16 @@ public class EnrollmentController {
         if (enrollmentService.isEnrolled(studentId, courseId)) {
             model.addAttribute("message", "You are already enrolled in this course!");
         } else {
-            enrollmentService.enroll(studentId, courseId);
-            enrolledCourses = new HashSet<>(enrollmentService.getEnrolledCourses(studentId));
-            model.addAttribute("message", "Successfully enrolled in " + courseId + "!");
+            // constraint 4: respect capacity
+            int enrolledCount = enrollmentService.countEnrolled(courseId);
+            int capacity = course.getCapacity();
+            if (capacity > 0 && enrolledCount >= capacity) {
+                model.addAttribute("message", "Course " + courseId + " is full (capacity " + capacity + ")");
+            } else {
+                enrollmentService.enroll(studentId, courseId);
+                enrolledCourses = new HashSet<>(enrollmentService.getEnrolledCourses(studentId));
+                model.addAttribute("message", "Successfully enrolled in " + courseId + "!");
+            }
         }
         
 
@@ -153,7 +160,15 @@ public class EnrollmentController {
             }
         }
 
+        // CONSTRAINT 4: respect capacity
         if (!enrollmentService.isEnrolled(studentId, courseId)) {
+            int enrolledCount = enrollmentService.countEnrolled(courseId);
+            int capacity = coursePost.getCapacity();
+            if (capacity > 0 && enrolledCount >= capacity) {
+                redirectAttributes.addFlashAttribute("message", "Course " + courseId + " is full (capacity " + capacity + ")");
+                redirectAttributes.addFlashAttribute("courses", currentEnrolled);
+                return "redirect:/schedule";
+            }
             enrollmentService.enroll(studentId, courseId);
         }
 

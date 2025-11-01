@@ -26,12 +26,12 @@ public class CourseDataRepo {
     }
 
     public void saveAll(List<Course> courses) {
-        final String insertCourse = "insert into course (course_id, course_name, credits, instructor, location, schedule, semester, campus_id) values (?,?,?,?,?,?,?,?)";
+    final String insertCourse = "insert into course (course_id, course_name, credits, instructor, location, schedule, semester, campus_id, capacity) values (?,?,?,?,?,?,?,?,?)";
         final String insertPrereq = "insert into course_prerequisites (course_course_id, prerequisites) values (?,?)";
         for (Course course : courses) {
             jdbc.update(insertCourse, course.getCourseId(), course.getCourseName(), course.getCredits(),
                     course.getInstructor(), course.getLocation(), course.getSchedule(), course.getSemester(),
-                    course.getCampusId());
+                    course.getCampusId(), course.getCapacity());
             if (course.getPrerequisites() != null) {
                 for (String p : course.getPrerequisites()) {
                     jdbc.update(insertPrereq, course.getCourseId(), p);
@@ -41,13 +41,13 @@ public class CourseDataRepo {
     }
 
     public List<Course> findByCourseIdIgnoreCase(String id) {
-        String sql = "select course_id, course_name, credits, instructor, location, schedule, semester, campus_id from course where upper(course_id)=upper(?)";
+        String sql = "select course_id, course_name, credits, instructor, location, schedule, semester, campus_id, capacity from course where upper(course_id)=upper(?)";
         List<Course> list = jdbc.query(sql, new Object[] { id }, new CourseRowMapper());
         return list;
     }
 
     public List<Course> findByCourseNameContainingIgnoreCase(String namePart) {
-        String sql = "select course_id, course_name, credits, instructor, location, schedule, semester, campus_id from course where lower(course_name) like '%' || lower(?) || '%'";
+        String sql = "select course_id, course_name, credits, instructor, location, schedule, semester, campus_id, capacity from course where lower(course_name) like '%' || lower(?) || '%'";
         List<Course> list = jdbc.query(sql, new CourseRowMapper(), namePart);
         return list;
     }
@@ -64,10 +64,12 @@ public class CourseDataRepo {
             List<String> prereqs = jdbc.query(
                     "select prerequisites from course_prerequisites where course_course_id = ?",
                     new Object[] { courseId }, (r, i) -> r.getString("prerequisites"));
-            String semester = rs.getString("semester");
-            String campusId = rs.getString("campus_id");
-            return new Course(courseId, courseName, instructor, schedule, location, credits, semester, campusId,
-                    prereqs);
+        String semester = rs.getString("semester");
+        String campusId = rs.getString("campus_id");
+        int capacity = rs.getInt("capacity");
+        // Course constructor order: courseId, courseName, instructor, schedule, location, credits, semester, campusId, capacity, prerequisites
+        return new Course(courseId, courseName, instructor, schedule, location, credits, semester, campusId,
+            capacity, prereqs);
         }
     }
 

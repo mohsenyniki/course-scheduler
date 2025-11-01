@@ -18,6 +18,7 @@ public class Course {
     private int credits;
     private String semester;
     private String campusId;
+    private int capacity;
 
     private List<String> prerequisites;
     // course description

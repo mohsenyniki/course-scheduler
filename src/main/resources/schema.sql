@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS course (
   location VARCHAR(255),
   schedule VARCHAR(255),
   semester VARCHAR(255),
-  campus_id VARCHAR(255)
+  campus_id VARCHAR(255),
+  capacity INTEGER DEFAULT 3
 );
 
 CREATE TABLE IF NOT EXISTS course_prerequisites (
