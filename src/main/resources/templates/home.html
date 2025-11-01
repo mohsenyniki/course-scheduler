@@ -6,11 +6,26 @@
 </head> -->
 
 <body style="position: relative; min-height: 100vh;">
-    <!-- Top-right login button -->
+    <!-- Top-right login / user info -->
     <div style="position: absolute; top: 12px; right: 12px; z-index: 1000;">
-        <a th:href="@{/login}" style="text-decoration:none;">
-            <button style="background:#17a2b8;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Login</button>
-        </a>
+        <!-- show login when anonymous -->
+        <div th:if="${currentUser == null}">
+            <a th:href="@{/login}" style="text-decoration:none;">
+                <button style="background:#17a2b8;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Login</button>
+            </a>
+        </div>
+
+        <!-- show basic user info when authenticated -->
+        <div th:if="${currentUser != null}" style="text-align: right; color: #222; background: rgba(255,255,255,0.8); padding:6px 10px; border-radius:6px;">
+            <div style="font-weight:600;" th:text="${displayName}">Display Name</div>
+            <div style="font-size:0.9em; color:#666;">@<span th:text="${currentUser}">username</span></div>
+            <!-- logout form (Spring Security CSRF token supported if available) -->
+            <form th:action="@{/logout}" method="post" style="margin-top:6px;">
+                <!-- only include CSRF inputs when Spring Security has exposed the _csrf attribute -->
+                <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" style="background:#e55353;color:white;border:none;padding:6px 8px;border-radius:5px;cursor:pointer;font-size:0.9em;">Logout</button>
+            </form>
+        </div>
     </div>
 
     <h1 style="text-align: center;">Schedule Your Courses With Us! </h1>

@@ -26,9 +26,13 @@ public class HomeController {
    private CourseDataRepo courseRepo;
 
  @GetMapping("/")
-
- public String home() {
-
+ public String home(Model model, Principal principal) {
+    if (principal != null) {
+       String username = principal.getName();
+       model.addAttribute("currentUser", username);
+       // For now we don't have a student profile lookup implemented, use username as display name
+       model.addAttribute("displayName", username);
+    }
     return "home";
  }
     
