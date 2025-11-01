@@ -17,7 +17,8 @@ import java.util.Collections;
 
 @Controller
 public class HomeController {
-   // logger previously used for debug; removed to keep output clean
+   // logger used to emit schedule debug information when requested
+   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(HomeController.class);
  @Autowired
  private niki.com.Course.Scheduler.Services.EnrollmentService enrollmentService;
 
@@ -112,7 +113,10 @@ public class HomeController {
             "Su", "Sunday"
       );
 
-      // Fill schedule table by matching course start hour to the slot
+   // Prepare a debug map so the template can display per-course matching info
+   Map<String, String> scheduleDebug = new LinkedHashMap<>();
+
+   // Fill schedule table by matching course start hour to the slot
       for (Course c : enrolledCourses) {
          String schedule = c.getSchedule();
          if (schedule == null) continue;
@@ -148,7 +152,10 @@ public class HomeController {
          if (matchedSlot == null) continue;
 
          List<String> tokens = tokenizeDays.apply(daysToken);
-         // store a debug-free mapping (no logging) — mapping validated earlier
+         // record debug info and log mapping
+         String tokenStr = String.join(",", tokens);
+         logger.info("Schedule mapping for {} -> schedule='{}' matchedSlot='{}' tokens='{}'", c.getCourseId(), schedule, matchedSlot, tokenStr);
+         scheduleDebug.put(c.getCourseId(), "schedule='" + schedule + "' matchedSlot='" + matchedSlot + "' tokens='[" + tokenStr + "]'");
          for (String tok : tokens) {
             String dayName = dayNameMap.get(tok);
             if (dayName != null) {
@@ -164,6 +171,8 @@ public class HomeController {
       model.addAttribute("timeSlots", timeSlots);
       model.addAttribute("days", List.of("Monday","Tuesday","Wednesday","Thursday","Friday"));
       model.addAttribute("scheduleTable", scheduleTable);
+      // provide per-course debug info to the template (optional display)
+      model.addAttribute("scheduleDebug", scheduleDebug);
       return "schedule"; // renders schedule.html
    }
 }

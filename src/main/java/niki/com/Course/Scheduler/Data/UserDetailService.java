@@ -48,8 +48,12 @@ public class UserDetailService {
                 .password(passwordEncoder.encode("alicepassword"))
                 .roles("USER")
                 .build();
+        UserDetails user10 = User.withUsername("Max")
+                .password(passwordEncoder.encode("maxepassword"))
+                .roles("USER")
+                .build();
        
 
-        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5, user8, user9);
+        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5, user8, user9, user10);
     }
 }

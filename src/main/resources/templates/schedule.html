@@ -72,7 +72,10 @@
         <tbody>
             <tr th:each="timeSlot : ${timeSlots}">
                 <td th:text="${timeSlot}"></td>
-                <td th:each="day : ${days}" th:text="${scheduleTable[timeSlot] != null ? scheduleTable[timeSlot][day] : ''}"></td>
+                <td th:each="day : ${days}" th:text="${scheduleTable[timeSlot] != null ? scheduleTable[timeSlot][day] : ''}">
+                    <!-- add an if statement that checks if one of these times slots in this day matches one of the enrolled courses
+                     add that course to this time slot -->
+                </td>
             </tr>
             <!-- <tr th:each="timeSlot : ${timeSlots}">
                 <td th:text="${timeSlot}"></td>
