@@ -5,7 +5,14 @@
     <title>cnnn</title>
 </head> -->
 
-<body>
+<body style="position: relative; min-height: 100vh;">
+    <!-- Top-right login button -->
+    <div style="position: absolute; top: 12px; right: 12px; z-index: 1000;">
+        <a th:href="@{/login}" style="text-decoration:none;">
+            <button style="background:#17a2b8;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Login</button>
+        </a>
+    </div>
+
     <h1 style="text-align: center;">Schedule Your Courses With Us! </h1>
     <img th:src="@{/images/welcome.png}" width="500" style="display:block; margin:auto;">
     <!-- quick access buttons -->
@@ -15,6 +22,7 @@
         <a th:href="@{/schedule}" style="margin-left: 10px; text-decoration:none;">
             <button style="background:#17a2b8;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Access my schedule</button>
         </a>
+        <!-- Login moved to top-right corner -->
     </div>
     <form th:action="@{/search}" method="get" style="text-align: center; margin-top: 20px;">
         <input type="text" name="query" placeholder="Search for a course" style="width: 420px; height: 35px;">
