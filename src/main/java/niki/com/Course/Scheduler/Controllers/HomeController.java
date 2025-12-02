@@ -6,7 +6,9 @@ import org.springframework.ui.Model;
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import niki.com.Course.Scheduler.Data.CourseDataRepo;
+import niki.com.Course.Scheduler.Data.UserRepository;
 import niki.com.Course.Scheduler.Models.Course;
+import niki.com.Course.Scheduler.Models.Student;
 import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Collections;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -25,14 +28,27 @@ public class HomeController {
    @Autowired
    private CourseDataRepo courseRepo;
 
+   @Autowired
+   private UserRepository userRepository;
+
  @GetMapping("/")
  public String home(Model model, Principal principal) {
-    if (principal != null) {
-       String username = principal.getName();
-       model.addAttribute("currentUser", username);
-       // For now we don't have a student profile lookup implemented, use username as display name
+    if (principal == null) {
+       return "redirect:/auth"; // Redirect to authentication page if not logged in
+    }
+    
+    String username = principal.getName();
+    model.addAttribute("currentUser", username);
+    
+    // Get student details from repository to show full name
+    Optional<Student> student = userRepository.findStudentByUsername(username);
+    if (student.isPresent()) {
+       String displayName = student.get().getFirstName() + " " + student.get().getLastName();
+       model.addAttribute("displayName", displayName);
+    } else {
        model.addAttribute("displayName", username);
     }
+    
     return "home";
  }
     

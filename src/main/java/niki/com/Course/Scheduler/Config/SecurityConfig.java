@@ -16,15 +16,19 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/auth", "/register", "/login", "/css/**", "/js/**").permitAll() // allow auth page and static resources
                 .requestMatchers("/enroll/**", "/schedule").authenticated() // must be logged in to enroll or view schedule
                 .anyRequest().permitAll() // everything else is public
             )
             .formLogin(form -> form
-                .loginPage("/login") // your custom login page (or default if not created)
+                .loginPage("/auth") // modern authentication page
+                .loginProcessingUrl("/login") // where to submit the login form
+                .failureUrl("/auth?error=true") // redirect here on login failure
                 .successHandler(enrollmentSuccessHandler)
                 .permitAll()
             )
             .logout(logout -> logout
+                .logoutSuccessUrl("/auth?logout=true")
                 .permitAll()
             )
             .csrf(csrf -> csrf.disable()); // disable for now, can enable later

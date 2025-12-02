@@ -40,8 +40,11 @@ public class EnrollmentAuthenticationSuccessHandler implements AuthenticationSuc
                     enrollmentService.enroll(username, courseId);
                 }
             }
+            // After processing enrollment, redirect to schedule
+            response.sendRedirect(request.getContextPath() + "/schedule");
+        } else {
+            // Default: redirect to home page (mapped to root "/")
+            response.sendRedirect(request.getContextPath() + "/");
         }
-
-        response.sendRedirect(request.getContextPath() + "/schedule");
     }
 }

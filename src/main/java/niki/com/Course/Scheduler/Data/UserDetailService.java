@@ -1,59 +1,31 @@
 package niki.com.Course.Scheduler.Data;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-@Configuration
-public class UserDetailService {
+@Service("userDetailService")
+public class UserDetailService implements UserDetailsService {
 
-    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    public UserDetailService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+    @Autowired
+    public UserDetailService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user1 = User.withUsername("Zahra")
-                .password(passwordEncoder.encode("zahrapassword"))
-                .roles("USER")
-                .build();
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        niki.com.Course.Scheduler.Models.User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        UserDetails user2 = User.withUsername("Parisa")
-                .password(passwordEncoder.encode("parisapassword"))
-                .roles("ADMIN")
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .roles(user.getRole().replace("ROLE_", ""))
+                .disabled(!user.isEnabled())
                 .build();
-        UserDetails user3 = User.withUsername("Parastoo")
-                .password(passwordEncoder.encode("parastoopassword"))
-                .roles("USER1")
-                .build();
-        UserDetails user4 = User.withUsername("Ali")
-                .password(passwordEncoder.encode("alipassword"))
-                .roles("USER")
-                .build();
-        UserDetails user5 = User.withUsername("Armin")
-                .password(passwordEncoder.encode("arminpassword"))
-                .roles("USER")
-                .build();
-        UserDetails user8 = User.withUsername("Ahmad")
-                .password(passwordEncoder.encode("ahmadpassword"))
-                .roles("USER")
-                .build();
-        UserDetails user9 = User.withUsername("Alice")
-                .password(passwordEncoder.encode("alicepassword"))
-                .roles("USER")
-                .build();
-        UserDetails user10 = User.withUsername("Max")
-                .password(passwordEncoder.encode("maxepassword"))
-                .roles("USER")
-                .build();
-       
-
-        return new InMemoryUserDetailsManager(user1, user2, user3, user4, user5, user8, user9, user10);
     }
 }
