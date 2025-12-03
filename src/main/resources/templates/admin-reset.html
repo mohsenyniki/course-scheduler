@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Reset Enrollments</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .admin-container {
+            max-width: 600px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .admin-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 16px;
+        }
+        .admin-description {
+            color: #666;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 24px;
+            color: #856404;
+        }
+        .success-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 24px;
+            color: #155724;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ff4757 0%, #e84118 100%);
+            color: white;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+        }
+        .btn-back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh;">
+    <div class="admin-container">
+        <h1 class="admin-title">⚙️ Admin Panel</h1>
+        <p class="admin-description">Clear all student enrollments to start fresh</p>
+        
+        <div th:if="${param.success}" class="success-box">
+            ✅ All enrollments have been cleared successfully!
+        </div>
+        
+        <div class="warning-box">
+            ⚠️ <strong>Warning:</strong> This will remove ALL student enrollments from ALL courses. This action cannot be undone.
+        </div>
+        
+        <form th:action="@{/admin/clear-enrollments}" method="post" onsubmit="return confirm('Are you sure you want to clear ALL enrollments? This cannot be undone!');">
+            <button type="submit" class="btn-danger">Clear All Enrollments</button>
+        </form>
+        
+        <a th:href="@{/}" class="btn-back">← Back to Home</a>
+    </div>
+</body>
+</html>

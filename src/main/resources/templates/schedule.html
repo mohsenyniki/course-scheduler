@@ -1,83 +1,153 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <title>Schedule</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Schedule - Student Portal</title>
+    <link rel="stylesheet" th:href="@{/css/schedule.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-
-<body style="font-family: Arial, Helvetica, sans-serif; background: #fafafa; color: #222;">
-    <div class="container" style="max-width: 1100px; margin: 18px auto; padding: 18px; background: white; box-shadow: 0 2px 6px rgba(0,0,0,0.06); border-radius: 8px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-            <div>
-                <h1 style="margin:0 0 6px 0;">My Schedule</h1>
-                <div style="color:#666; font-size:0.95rem;">Weekly overview of your enrolled courses</div>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                    <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+                <span>Student Portal</span>
             </div>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <a href="/" style="text-decoration:none;"><button style="background:#6c757d;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Back</button></a>
-                <a th:href="@{/search}" style="text-decoration:none;"><button style="background:#17a2b8;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer;">Search Courses</button></a>
+            
+            <div class="nav-actions">
+                <a th:href="@{/}" class="btn-nav">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                        <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                    Home
+                </a>
+                <a th:href="@{/search}" class="btn-primary-nav">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    Search Courses
+                </a>
             </div>
         </div>
+    </nav>
 
-        <div th:if="${message != null}" style="margin-top:12px;padding:10px;border:1px solid #ffd6d6;background:#fff5f5;color:#8a1f1f;border-radius:6px;">
-            <strong th:text="${message}"></strong>
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-container">
+            <div class="header-content">
+                <h1 class="page-title">My Schedule</h1>
+                <p class="page-subtitle">Weekly overview of your enrolled courses</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Success/Error Message -->
+        <div th:if="${message != null}" class="alert-message">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span th:text="${message}"></span>
         </div>
 
-        <!-- Enrolled courses summary -->
-        <section style="margin-top:16px;">
-            <h3 style="margin:0 0 8px 0;">Enrolled Courses</h3>
-            <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                <div th:each="course : ${enrolledCourses}" style="display:flex;align-items:center;gap:8px;padding:8px 10px;background:#f1f7ff;border:1px solid #e6f0ff;border-radius:6px;">
-                    <form th:action="@{'/enroll/drop/' + ${course.courseId}}" method="post" style="display:inline;">
-                        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                        <button type="submit" style="background:#c82333;color:white;border:none;padding:6px 8px;border-radius:4px;cursor:pointer;">Drop</button>
-                    </form>
-                    <div style="min-width:160px;">
-                        <div style="font-weight:600;" th:text="${course.courseId}">COURSE</div>
-                        <div style="font-size:0.9rem;color:#444;" th:text="${course.courseName}">Course name</div>
+        <!-- Enrolled Courses Section -->
+        <section class="enrolled-section">
+            <h2 class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+                Enrolled Courses
+            </h2>
+            
+            <div class="courses-grid">
+                <div th:each="course : ${enrolledCourses}" class="course-chip">
+                    <div class="course-info">
+                        <div class="course-id" th:text="${course.courseId}">COURSE-101</div>
+                        <div class="course-name" th:text="${course.courseName}">Course Name</div>
+                        <div class="course-schedule">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            <span th:text="${course.schedule}">Schedule</span>
+                        </div>
                     </div>
-                    <div style="color:#666;font-size:0.9rem;" th:text="${course.schedule}">Schedule</div>
+                    <form th:action="@{'/enroll/drop/' + ${course.courseId}}" method="post">
+                        <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="btn-drop" title="Drop this course">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
-                <div th:if="${enrolledCourses == null || #lists.isEmpty(enrolledCourses)}" style="color:#666;">You have no enrolled courses.</div>
+                
+                <div th:if="${enrolledCourses == null || #lists.isEmpty(enrolledCourses)}" class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                    <p>No courses enrolled yet</p>
+                    <a th:href="@{/search}" class="btn-search-empty">Search for courses</a>
+                </div>
             </div>
         </section>
 
-        <!-- Debug output (optional) -->
-        <div th:if="${scheduleDebug != null}" style="margin-top:14px;color:#444;font-size:0.9rem;">
-            <strong>Schedule debug:</strong>
-            <ul style="margin:6px 0 0 18px;">
-                <li th:each="course : ${enrolledCourses}" th:text="${course.courseId + ' -> ' + (scheduleDebug[course.courseId] != null ? scheduleDebug[course.courseId] : 'null')}"></li>
-            </ul>
-        </div>
-
-        <!-- Schedule Table -->
-        <div style="margin-top:18px; overflow:auto; border:1px solid #ececec; border-radius:6px;">
-            <table style="border-collapse: collapse; width:100%; min-width:760px;">
-                <thead>
-                    <tr>
-                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6; text-align:left; width:120px;">Time</th>
-                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Monday</th>
-                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Tuesday</th>
-                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Wednesday</th>
-                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Thursday</th>
-                        <th style="position:sticky; top:0; background:#fff; padding:10px; border-bottom:1px solid #e6e6e6;">Friday</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="timeSlot : ${timeSlots}">
-                        <td style="padding:8px 10px; border-top:1px solid #f0f0f0; font-weight:600;"> <span th:text="${timeSlot}"></span></td>
-                        <td th:each="day : ${days}" style="padding:8px 10px; border-top:1px solid #f0f0f0; height:42px; vertical-align:middle; text-align:left;">
-                            <span th:text="${scheduleTable[timeSlot] != null ? scheduleTable[timeSlot][day] : ''}"></span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
+        <!-- Schedule Calendar Section -->
+        <section class="calendar-section">
+            <h2 class="section-title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Weekly Calendar
+            </h2>
+            
+            <div class="calendar-wrapper">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th class="time-header">Time</th>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="timeSlot : ${timeSlots}">
+                            <td class="time-cell">
+                                <span th:text="${timeSlot}">08:00</span>
+                            </td>
+                            <td th:each="day : ${days}" class="schedule-cell">
+                                <th:block th:with="dayMap=${scheduleTable.get(timeSlot)}, courseLabel=${dayMap != null ? dayMap.get(day) : ''}">
+                                    <div th:if="${courseLabel != null && courseLabel != ''}" 
+                                         class="course-block"
+                                         th:text="${courseLabel}">
+                                        Course
+                                    </div>
+                                </th:block>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
 </body>
-    </table>
-
-    <!-- <a href="/">Go Back</a> -->
-</body>
-
 </html>

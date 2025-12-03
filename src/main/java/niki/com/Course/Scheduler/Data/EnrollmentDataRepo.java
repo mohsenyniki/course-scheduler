@@ -39,4 +39,8 @@ public class EnrollmentDataRepo {
         Integer c = jdbc.queryForObject("SELECT COUNT(*) FROM enrollment WHERE course_course_id = ?", Integer.class, courseId);
         return c == null ? 0 : c;
     }
+
+    public void clearAllEnrollments() {
+        jdbc.update("DELETE FROM enrollment");
+    }
 }

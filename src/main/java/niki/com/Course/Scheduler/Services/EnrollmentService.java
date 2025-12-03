@@ -35,4 +35,8 @@ public class EnrollmentService {
     public int countEnrolled(String courseId) {
         return repo.countEnrolledForCourse(courseId);
     }
+
+    public void clearAllEnrollments() {
+        repo.clearAllEnrollments();
+    }
 }

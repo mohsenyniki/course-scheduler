@@ -16,7 +16,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth", "/register", "/login", "/css/**", "/js/**").permitAll() // allow auth page and static resources
+                .requestMatchers("/auth", "/register", "/login", "/css/**", "/js/**", "/admin/**").permitAll() // allow auth page, admin, and static resources
                 .requestMatchers("/enroll/**", "/schedule").authenticated() // must be logged in to enroll or view schedule
                 .anyRequest().permitAll() // everything else is public
             )
