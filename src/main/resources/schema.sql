@@ -26,6 +26,29 @@ CREATE TABLE IF NOT EXISTS enrollment (
   FOREIGN KEY(course_course_id) REFERENCES course(course_id)
 );
 
+-- User authentication table
+CREATE TABLE IF NOT EXISTS users (
+  username VARCHAR(255) PRIMARY KEY,
+  password VARCHAR(255) NOT NULL,
+  student_id INTEGER NOT NULL,
+  role VARCHAR(50) NOT NULL DEFAULT 'ROLE_USER',
+  enabled BOOLEAN NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Student profile table
+CREATE TABLE IF NOT EXISTS students (
+  student_id VARCHAR(255) PRIMARY KEY,
+  username VARCHAR(255) UNIQUE NOT NULL,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  major VARCHAR(255),
+  year INTEGER,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(username) REFERENCES users(username)
+);
+
 -- Optional student directory table. The app currently stores enrollments by username
 -- so we keep username as the primary key to match enrollment.student_username.
 CREATE TABLE IF NOT EXISTS student (
@@ -34,3 +57,4 @@ CREATE TABLE IF NOT EXISTS student (
   email VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
