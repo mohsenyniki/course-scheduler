@@ -45,6 +45,12 @@ CREATE TABLE IF NOT EXISTS students (
   email VARCHAR(255) UNIQUE NOT NULL,
   major VARCHAR(255),
   year INTEGER,
+  gpa DECIMAL(3,2),
+  birth_date DATE,
+  phone VARCHAR(20),
+  address TEXT,
+  city VARCHAR(100),
+  country VARCHAR(100),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY(username) REFERENCES users(username)
 );

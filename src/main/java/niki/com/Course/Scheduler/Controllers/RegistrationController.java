@@ -95,15 +95,21 @@ public class RegistrationController {
 
         // Create new student
         int newStudentId = userRepository.getNextStudentId();
-        Student newStudent = new Student(
-                String.valueOf(newStudentId),
-                firstName.trim(),
-                lastName.trim(),
-                email.trim(),
-                major.trim(),
-                new java.util.ArrayList<>(),
-                1 // Default to freshman year
-        );
+        Student newStudent = new Student();
+        newStudent.setStudentId(String.valueOf(newStudentId));
+        newStudent.setFirstName(firstName.trim());
+        newStudent.setLastName(lastName.trim());
+        newStudent.setEmail(email.trim());
+        newStudent.setMajor(major.trim());
+        newStudent.setEnrolledCourses(new java.util.ArrayList<>());
+        newStudent.setYear(1); // Default to freshman year
+        // New biographical fields will be null initially
+        newStudent.setGpa(null);
+        newStudent.setBirthDate(null);
+        newStudent.setPhone(null);
+        newStudent.setAddress(null);
+        newStudent.setCity(null);
+        newStudent.setCountry(null);
 
         // Create new user
         User newUser = new User(
@@ -115,7 +121,7 @@ public class RegistrationController {
         );
 
         // Save both
-        userRepository.saveStudent(newStudent);
+        userRepository.saveStudent(newStudent, username.trim());
         userRepository.saveUser(newUser);
 
         model.addAttribute("success", "Registration successful! Please sign in.");

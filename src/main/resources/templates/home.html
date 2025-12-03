@@ -25,10 +25,13 @@
                 </div>
                 
                 <div th:if="${currentUser != null}" class="user-info">
-                    <div class="user-details">
-                        <div class="user-name" th:text="${displayName}">Display Name</div>
-                        <div class="user-username">@<span th:text="${currentUser}">username</span></div>
-                    </div>
+                    <a th:href="@{/profile}" class="btn-profile">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                        <span th:text="${currentUser}">username</span>
+                    </a>
                     <form th:action="@{/logout}" method="post" style="display:inline;">
                         <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         <button type="submit" class="btn-logout">Logout</button>

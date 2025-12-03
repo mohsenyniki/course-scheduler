@@ -17,7 +17,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth", "/register", "/login", "/css/**", "/js/**", "/admin/**").permitAll() // allow auth page, admin, and static resources
-                .requestMatchers("/enroll/**", "/schedule").authenticated() // must be logged in to enroll or view schedule
+                .requestMatchers("/enroll/**", "/schedule", "/profile").authenticated() // must be logged in to enroll, view schedule, or view profile
                 .anyRequest().permitAll() // everything else is public
             )
             .formLogin(form -> form
