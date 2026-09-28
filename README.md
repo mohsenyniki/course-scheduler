@@ -1,5 +1,7 @@
 # Course Scheduler: Student Portal & Course Enrollment System
 
+[![CI](https://github.com/mohsenyniki/course-scheduler/actions/workflows/ci.yml/badge.svg)](https://github.com/mohsenyniki/course-scheduler/actions/workflows/ci.yml)
+
 A full-stack student portal built with **Java 17** and **Spring Boot 3**. Students can search for courses, enroll and drop, and see their classes on a weekly schedule. The app blocks enrollments that would cause a time conflict or go over a course's capacity.
 
 ## Features
@@ -20,6 +22,7 @@ A full-stack student portal built with **Java 17** and **Spring Boot 3**. Studen
 | Backend | Java 17, Spring Boot 3, Spring MVC, Spring Security |
 | Data | SQLite, Spring JDBC (`JdbcTemplate`), SQL schema |
 | Frontend | Thymeleaf, HTML, CSS |
+| Testing | JUnit 5, Mockito, AssertJ, GitHub Actions (CI) |
 | Build & deploy | Maven, Docker (multi-stage build), deployed on Render |
 
 ## Architecture
@@ -50,6 +53,23 @@ Then open http://localhost:8080.
 docker build -t course-scheduler .
 docker run -p 8080:8080 course-scheduler
 ```
+
+## Tests
+
+The enrollment rules are covered by **JUnit 5** unit tests, using **Mockito** to mock the data layer so they run fast and need no database:
+
+- **Schedule conflicts:** overlapping times are rejected. Back-to-back classes and the same time slot on different days are allowed, and Tuesday (`T`) and Thursday (`Th`) are handled correctly.
+- **Capacity:** full courses are rejected, the last seat can be taken, and capacity `0` means unlimited.
+- **Prerequisites:** missing prerequisites are rejected and listed by name.
+- **Edge cases:** unknown courses, duplicate enrollment, unauthenticated users, dropping courses.
+
+Run them locally:
+
+```bash
+./mvnw test
+```
+
+Tests also run automatically on every push through **GitHub Actions** (see the CI badge above).
 
 ## Author
 
