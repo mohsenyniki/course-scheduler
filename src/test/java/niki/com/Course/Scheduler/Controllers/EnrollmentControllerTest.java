@@ -117,6 +117,19 @@ class EnrollmentControllerTest {
         verify(enrollmentService, never()).enroll(anyString(), anyString());
     }
 
+    @Test
+    @DisplayName("Tells the student they are already enrolled instead of reporting a time conflict")
+    void rejectsDuplicateEnrollmentWithClearMessage() {
+        givenCourse(course("CS101", "MWF 10:00 - 11:00", 3, List.of()));
+        givenEnrolledIn("CS101");
+        when(enrollmentService.isEnrolled(STUDENT, "CS101")).thenReturn(true);
+
+        enroll("CS101");
+
+        assertThat(flashMessage()).isEqualTo("You are already enrolled in CS101");
+        verify(enrollmentService, never()).enroll(anyString(), anyString());
+    }
+
     // ---------- prerequisites ----------
 
     @Test
