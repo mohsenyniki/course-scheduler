@@ -63,6 +63,7 @@ public class EnrollmentController {
         LocalTime targetStart = parseStart(targetSchedule);
         LocalTime targetEnd = parseEnd(targetSchedule);
         for (String enrolledId : enrolledCourses) {
+            if (enrolledId.equalsIgnoreCase(courseId)) continue; // don't compare a course with itself
             List<Course> enrolledFound = courseRepo.findByCourseIdIgnoreCase(enrolledId);
             if (enrolledFound.isEmpty()) continue;
             Course e = enrolledFound.get(0);
@@ -125,6 +126,14 @@ public class EnrollmentController {
             return "redirect:/schedule";
         }
         Course coursePost = foundPost.get(0);
+
+        // A student who is already in this course gets a clear message
+        // (otherwise the course would be compared against itself and reported as a time conflict)
+        if (enrollmentService.isEnrolled(studentId, courseId)) {
+            redirectAttributes.addFlashAttribute("message", "You are already enrolled in " + courseId);
+            redirectAttributes.addFlashAttribute("courses", enrollmentService.getEnrolledCourses(studentId));
+            return "redirect:/schedule";
+        }
         List<String> prereqsPost = coursePost.getPrerequisites();
         Set<String> currentEnrolled = enrollmentService.getEnrolledCourses(studentId);
         if (prereqsPost != null && !prereqsPost.isEmpty()) {
